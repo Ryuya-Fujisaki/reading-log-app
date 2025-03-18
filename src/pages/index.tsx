@@ -49,12 +49,16 @@ export default function Home() {
   }
 
   async function addBook() {
-    const { data, error } = await supabase.from("books").insert([newBook]);
+    const { data, error } = await supabase
+      .from<Book>("books")
+      .insert([newBook]);
     if (error) {
       console.error("Error adding book:", error);
     } else {
-      // Fetch updated data
-      await fetchBooks();
+      if (data && data.length > 0) {
+        // Use the inserted data
+        setBooks((prevBooks) => [...prevBooks, data[0]]);
+      }
 
       // Reset form
       setNewBook({
