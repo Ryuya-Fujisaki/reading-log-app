@@ -50,8 +50,9 @@ export default function Home() {
 
   async function addBook() {
     const { data, error } = await supabase
-      .from<Book>("books")
+      .from<Book, Book[]>("books")
       .insert([newBook]);
+
     if (error) {
       console.error("Error adding book:", error);
     } else {
